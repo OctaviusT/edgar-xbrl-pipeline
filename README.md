@@ -1,31 +1,45 @@
-edgar-xbrl-pipeline/
-  README.md
-  CHANGELOG.md
-  LICENSE
-  .gitignore
-  requirements.txt
+# EDGAR XBRL Statement Pipeline
 
-  src/
-    edgar/
-      sec_client.py
-      companyfacts.py
-      filings.py
-    xbrl/
-      linkbase_parser.py
-      statement_builder.py
-    pipelines/
-      mp_10k_linkbase_pipeline.py
+This repository documents a practical pipeline for extracting structured, statement-level financial data from SEC EDGAR filings using XBRL linkbase files and the SEC companyfacts API.
 
-  docs/
-    XBRL_NOTES.md
-    METHODOLOGY.md
+The project began as an exploration of SEC JSON endpoints, progressed through an attempted Arelle-based iXBRL approach, and ultimately converged on a reliable linkbase-driven methodology.
 
-  data/
-    sample_output/
-      (optional: a small redacted CSV set or one statement)
+## Why this exists
+EDGAR filings contain machine-readable financial data, but:
+- Companyfacts JSON lacks statement structure and ordering
+- HTML tables are inconsistent and fragile
+- Some iXBRL tooling is environment-sensitive
 
-  notebooks/
-    (optional: exploration notebooks)
+This project reconstructs full statement views directly from XBRL linkbases (`*_pre.xml`, `*_lab.xml`) while sourcing numeric values from SEC companyfacts.
 
-  scripts/
-    run_mp_pipeline.ps1
+## Scripts (current state)
+
+### `xbrlpull.py`
+Initial SEC JSON exploration:
+- Pulls filings metadata
+- Pulls companyfacts
+- Filters facts to the latest 10-K
+
+### `10Kstatements.py`
+Attempted Arelle-based solution:
+- Loads iXBRL/DTS via Arelle
+- Retained for reference due to environment-specific issues
+
+### `10_linkbase.py`
+Working solution:
+- Parses presentation and label linkbases
+- Reconstructs statement hierarchies
+- Outputs one CSV per presentation role
+
+## Output
+CSV files representing statements and note tables, including:
+- indentation depth
+- line item labels
+- XBRL concept identifiers
+- period-correct values
+
+## Status
+This repository is a working proof-of-concept intended to be extended into:
+- multi-company pipelines
+- trend analysis
+- dashboards and client-facing reporting
