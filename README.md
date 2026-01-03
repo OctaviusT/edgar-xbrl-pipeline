@@ -6,7 +6,7 @@ The project began as an exploration of SEC JSON endpoints, progressed through an
 
 ## Why this exists
 EDGAR filings contain machine-readable financial data, but:
-- Companyfacts JSON lacks statement structure and ordering
+- Company facts JSON lacks statement structure and ordering
 - HTML tables are inconsistent and fragile
 - Some iXBRL tooling is environment-sensitive
 
